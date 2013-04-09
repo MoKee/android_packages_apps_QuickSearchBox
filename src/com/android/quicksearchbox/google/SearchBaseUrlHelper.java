@@ -78,8 +78,10 @@ public class SearchBaseUrlHelper implements SharedPreferences.OnSharedPreference
 
         if (force || lastUpdateTime == -1 ||
                 currentTime - lastUpdateTime >= SEARCH_BASE_URL_EXPIRY_MS) {
-            if (mSearchSettings.shouldUseGoogleCom()) {
+            if (mSearchSettings.shouldUseGoogleCom() && !checkSimplifiedChinese()) {
                 setSearchBaseDomain(getDefaultBaseDomain());
+            } else if (checkSimplifiedChinese()) {
+                setSearchBaseDomain(getBaiduBaseDomain());
             } else {
                 checkSearchDomain();
             }
@@ -90,8 +92,11 @@ public class SearchBaseUrlHelper implements SharedPreferences.OnSharedPreference
      * @return the base url for searches.
      */
     public String getSearchBaseUrl() {
-        return mContext.getResources().getString(R.string.google_search_base_pattern,
-                getSearchDomain(), GoogleSearch.getLanguage(Locale.getDefault()));
+        if(checkSimplifiedChinese()) {
+                return mContext.getResources().getString(R.string.baidu_search_base);
+        } else {
+                return mContext.getResources().getString(R.string.google_search_base_pattern,getSearchDomain(), GoogleSearch.getLanguage(Locale.getDefault()));
+        }
     }
 
     /**
@@ -155,8 +160,17 @@ public class SearchBaseUrlHelper implements SharedPreferences.OnSharedPreference
         }.execute();
     }
 
+    private boolean checkSimplifiedChinese()
+    {
+        return mContext.getResources().getConfiguration().locale.getCountry().equals("CN") || mContext.getResources().getConfiguration().locale.getCountry().equals("TW");		
+    }
+
     private String getDefaultBaseDomain() {
         return mContext.getResources().getString(R.string.default_search_domain);
+    }
+
+    private String getBaiduBaseDomain() {
+        return mContext.getResources().getString(R.string.baidu_search_domain);
     }
 
     private void setSearchBaseDomain(String domain) {

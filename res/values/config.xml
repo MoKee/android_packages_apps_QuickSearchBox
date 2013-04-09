@@ -103,7 +103,10 @@
   <!-- The default search domain for search result pages -->
   <string name="default_search_domain" translatable="false">
       .google.com</string>
-
+  <string name="baidu_search_base" translatable="false">
+      http://m.baidu.com/</string>
+  <string name="baidu_search_domain" translatable="false">
+      m.baidu.com</string>
   <!-- Note that this is the standard suggest url.  It uses the current locale for language -->
   <!-- (t%1$s) and should not need to be replaced by locale or mcc selected resources. -->
   <!-- Any changes to this (especially in terms of adding/removing the MCC-specific flavors) -->

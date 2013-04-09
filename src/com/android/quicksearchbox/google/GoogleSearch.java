@@ -133,9 +133,14 @@ public class GoogleSearch extends Activity {
         }
 
         try {
-            String searchUri = mSearchDomainHelper.getSearchBaseUrl()
+            String searchUri = "";
+            if(getResources().getConfiguration().locale.getCountry().equals("CN") || getResources().getConfiguration().locale.getCountry().equals("TW")) {
+                   searchUri = mSearchDomainHelper.getSearchBaseUrl() + "s?word=" + URLEncoder.encode(query, "UTF-8") + "&from=1677a";
+            } else {
+                   searchUri = mSearchDomainHelper.getSearchBaseUrl()
                     + "&source=android-" + source
                     + "&q=" + URLEncoder.encode(query, "UTF-8");
+            }
             Intent launchUriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(searchUri));
             launchUriIntent.putExtra(Browser.EXTRA_APPLICATION_ID, applicationId);
             launchUriIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
