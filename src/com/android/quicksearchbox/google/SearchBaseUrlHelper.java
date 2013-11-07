@@ -23,6 +23,7 @@ import com.android.quicksearchbox.util.HttpHelper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.mokee.util.MoKeeUtils;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
@@ -78,9 +79,9 @@ public class SearchBaseUrlHelper implements SharedPreferences.OnSharedPreference
 
         if (force || lastUpdateTime == -1 ||
                 currentTime - lastUpdateTime >= SEARCH_BASE_URL_EXPIRY_MS) {
-            if (mSearchSettings.shouldUseGoogleCom() && !checkSimplifiedChinese()) {
+            if (mSearchSettings.shouldUseGoogleCom() && !MoKeeUtils.isChineseLanguage()) {
                 setSearchBaseDomain(getDefaultBaseDomain());
-            } else if (checkSimplifiedChinese()) {
+            } else if (MoKeeUtils.isChineseLanguage()) {
                 setSearchBaseDomain(getBaiduBaseDomain());
             } else {
                 checkSearchDomain();
@@ -92,7 +93,7 @@ public class SearchBaseUrlHelper implements SharedPreferences.OnSharedPreference
      * @return the base url for searches.
      */
     public String getSearchBaseUrl() {
-        if(checkSimplifiedChinese()) {
+        if(MoKeeUtils.isChineseLanguage()) {
                 return mContext.getResources().getString(R.string.baidu_search_base);
         } else {
                 return mContext.getResources().getString(R.string.google_search_base_pattern,getSearchDomain(), GoogleSearch.getLanguage(Locale.getDefault()));
@@ -158,11 +159,6 @@ public class SearchBaseUrlHelper implements SharedPreferences.OnSharedPreference
                 return null;
             }
         }.execute();
-    }
-
-    private boolean checkSimplifiedChinese()
-    {
-        return mContext.getResources().getConfiguration().locale.getCountry().equals("CN") || mContext.getResources().getConfiguration().locale.getCountry().equals("TW");		
     }
 
     private String getDefaultBaseDomain() {

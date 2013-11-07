@@ -26,6 +26,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.mokee.util.MoKeeUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
@@ -134,7 +135,7 @@ public class GoogleSearch extends Activity {
 
         try {
             String searchUri = "";
-            if(getResources().getConfiguration().locale.getCountry().equals("CN") || getResources().getConfiguration().locale.getCountry().equals("TW")) {
+            if (MoKeeUtils.isChineseLanguage()) {
                    searchUri = mSearchDomainHelper.getSearchBaseUrl() + "s?word=" + URLEncoder.encode(query, "UTF-8") + "&from=1677a";
             } else {
                    searchUri = mSearchDomainHelper.getSearchBaseUrl()
